@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+}
+
+group = 'hdi'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://repo.datainsight.health/repository/maven-releases/'
+    }
+}
+
+java.sourceCompatibility = JavaVersion.VERSION_17
+
+dependencies {
+    implementation 'hdi:edi:2.14.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.+'
+    implementation 'commons-io:commons-io:2.18.0'
+    testImplementation 'junit:junit:4.+'
+    testImplementation 'org.assertj:assertj-core:3.27.3'
+    // lombok is used only in tests, you can run the parser without this dependency
+    def lombok = 'org.projectlombok:lombok:1.18.38'
+    testCompileOnly lombok
+    testAnnotationProcessor lombok
+
+    testImplementation 'org.slf4j:slf4j-api:2.0.+'
+}
+
+test {
+    useJUnit()
+    testLogging {
+        showStandardStreams true
+        exceptionFormat 'full'
+    }
+    filter {
+        includeTestsMatching "TestSuite"
+    }
+}

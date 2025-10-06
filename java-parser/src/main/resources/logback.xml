@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <variable name="loggingDir" value="./logs"/>
+    <variable name="loggingFilename" value="edi"/>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%date{MM-dd HH:mm:ss.SSS} %-1.-1level %-10.10thread %-23.23(%logger{16}) | %message%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="logfileout" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${loggingDir}/${loggingFilename}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-1.-1level %-12.12thread %-28.28(%logger{16}):%line | %message%n
+            </pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${loggingDir}/${loggingFilename}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+            <maxHistory>120</maxHistory>
+            <totalSizeCap>50GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="hdi" level="${hdi_log_level:-INFO}"/>
+    <logger name="EdiConsoleLogger" level="${hdi_log_level:-INFO}"/>
+    <logger name="org" level="INFO"/>
+
+    <logger name="com" level="INFO"/>
+    <logger name="net" level="INFO"/>
+    <logger name="io" level="INFO"/>
+    <logger name="reactor" level="INFO"/>
+    <logger name="netty" level="INFO"/>
+
+    <root level="DEBUG">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="logfileout"/>
+    </root>
+
+
+</configuration>
